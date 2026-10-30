@@ -8,10 +8,11 @@ Previous application/CMS/journal work was retained. This continuation adds:
 
 The desktop live-site checks completed at the end of the previous run: BN/EN switching, guest journal save and persistence after reload, demo review/result navigation, bowling drill filtering, drill dialog, Escape dismissal and device-mode account messaging. The older 29 October checkpoint recorded the preview limitation before these live checks; production interactions worked. Mobile, browser video inference and online admin tests are not completed. Auth/SMTP flow is API-tested with a fake mail transport; no real email has been sent.
 
+GitHub access resolved on 30 October: the owner granted integration write access. The complete prepared source was pushed to EMON-721/Goli-Coach main as c572d2f9c566a3cb1f2cfe387a297ed98c4af81c, preserving the initial commit. The remote branch SHA was verified. GitHub Actions started; see the repository Actions tab for its result.
+
 Still externally blocked:
-1. GitHub target EMON-721/Goli-Coach still has only its initial README. On 30 October, create-tree was rejected again: 403 Resource not accessible by integration. No branch was changed. The connected GitHub integration needs write permission for this repository.
-2. Owner previously chose to prepare code and defer cloud provisioning. No different Supabase organisation, CPU host or SMTP provider was supplied. The hosted static Site remains device-local; accounts/admin need the backend online on the same HTTPS origin.
-3. No consented, annotated Bangladesh cricket frames were supplied. Evaluation harness exists; actual Bangladesh model evaluation remains NOT EVALUATED. No data was invented or imported.
+1. Owner previously chose to prepare code and defer cloud provisioning. No different Supabase organisation, CPU host or SMTP provider was supplied. The hosted static Site remains device-local; accounts/admin need the backend online on the same HTTPS origin.
+2. No consented, annotated Bangladesh cricket frames were supplied. Evaluation harness exists; actual Bangladesh model evaluation remains NOT EVALUATED. No data was invented or imported.
 
 Other production gaps still apply: managed multi-instance database, real email delivery verification, MFA, async job queue, remote encrypted backups, retention schedule, malware scanning, safe share links and video export. This is not a completed V5 production release.
 
