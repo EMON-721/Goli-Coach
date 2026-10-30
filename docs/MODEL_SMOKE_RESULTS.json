@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "test_kind": "technical smoke; repeated still-image video and blank-video controls",
+  "not_a_cricket_benchmark": true,
+  "bangladesh_evaluation": "NOT EVALUATED",
+  "genuine_bangladesh_rows": 0,
+  "results": [
+    {
+      "fixture": "pose_image_repeated",
+      "sampled_frames": 40,
+      "detected_frames": 40,
+      "latency_ms": 1801.92,
+      "model_id": "mediapipe-pose-landmarker-lite"
+    },
+    {
+      "fixture": "blank_frames",
+      "sampled_frames": 40,
+      "detected_frames": 0,
+      "latency_ms": 1147.01,
+      "model_id": "mediapipe-pose-landmarker-lite"
+    }
+  ],
+  "health": {
+    "status": "ready",
+    "model_id": "mediapipe-pose-landmarker-lite",
+    "model_version": "float16/1",
+    "model_loaded": true,
+    "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a",
+    "runtime": "Python MediaPipe CPU",
+    "sample_inference_tested": true,
+    "latency_ms": 1147.01,
+    "last_success": "2026-10-26T13:08:04.747842+00:00",
+    "bangladesh_evaluation": "NOT EVALUATED",
+    "enabled": true
+  }
+}

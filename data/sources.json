@@ -1,0 +1,81 @@
+{
+  "project": "GoliCoach AI",
+  "sources": [
+    {
+      "id": "SRC-01",
+      "publisher_or_title": "BD Sports-10 — Bangladesh traditional sports video dataset",
+      "url": "https://data.mendeley.com/datasets/rnh3x48nfb/2",
+      "category": "downloadable_research_video_dataset",
+      "intended_use": "Bangladeshi motion/action video research data; NOTE dataset has NO CRICKET class and cannot alone train cricket pose coach",
+      "coverage": "Bangladesh",
+      "access_verified": "Prior V2 reference; LIVE availability not independently rechecked today",
+      "download_and_license_status": "To check for each linked document, API endpoint and use case; DO NOT assume redistribution/training rights",
+      "review_state": "candidate_not_imported",
+      "ingested_rows": 0,
+      "requires_attribution": true,
+      "checked_at": "2026-10-26",
+      "import_status": "reference_only",
+      "allowed_for_train": false,
+      "allowed_for_ui": false
+    },
+    {
+      "id": "SRC-02",
+      "publisher_or_title": "Cric-360 — cricket broadcast ground frames (not Bangladesh-specific)",
+      "url": "https://huggingface.co/datasets/sarimshahzad/Cric-360",
+      "category": "gated_nonbangladesh_research_dataset",
+      "intended_use": "Auxiliary cricket vision domain reference ONLY; broadcast ground frames do not label local batting biomechanics",
+      "coverage": "Global / partly Bangladesh match frames",
+      "access_verified": "Prior V2 reference; LIVE availability not independently rechecked today",
+      "download_and_license_status": "To check for each linked document, API endpoint and use case; DO NOT assume redistribution/training rights",
+      "review_state": "candidate_not_imported",
+      "ingested_rows": 0,
+      "requires_attribution": true,
+      "checked_at": "2026-10-26",
+      "import_status": "reference_only",
+      "allowed_for_train": false,
+      "allowed_for_ui": false
+    },
+    {
+      "id": "SRC-03",
+      "publisher_or_title": "Bangladesh Open Data — searchable datasets",
+      "url": "https://data.gov.bd/dataset",
+      "category": "dataset_catalog",
+      "intended_use": "Find filtered Bangladesh CSV/XLSX datasets by topic and year",
+      "coverage": "Bangladesh",
+      "access_verified": "Prior V2 reference; LIVE availability not independently rechecked today",
+      "download_and_license_status": "To check for each linked document, API endpoint and use case; DO NOT assume redistribution/training rights",
+      "review_state": "candidate_not_imported",
+      "ingested_rows": 0,
+      "requires_attribution": true,
+      "checked_at": "2026-10-26",
+      "import_status": "reference_only",
+      "allowed_for_train": false,
+      "allowed_for_ui": false
+    },
+    {
+      "publisher_or_title": "Bangladesh Open Data terms of use",
+      "url": "https://data.gov.bd/terms-of-use",
+      "intended_use": "Government portal terms; per-dataset reuse license must be inspected",
+      "data_license_review_state": "reference_only_automatic_reuse_not_assumed",
+      "import_status": "reference_only",
+      "checked_at": "2026-10-26",
+      "ingested_rows": 0,
+      "allowed_for_train": false,
+      "allowed_for_ui": false
+    },
+    {
+      "publisher_or_title": "Bangladesh Open Data FAQ",
+      "url": "https://www.data.gov.bd/bn/faqs",
+      "intended_use": "States data generally OGL, but each dataset page determines applicable license",
+      "data_license_review_state": "check_individual_dataset_terms",
+      "import_status": "reference_only",
+      "checked_at": "2026-10-26",
+      "ingested_rows": 0,
+      "allowed_for_train": false,
+      "allowed_for_ui": false
+    }
+  ],
+  "government_site_links_not_full_datasets": true,
+  "reuse_review_required": true,
+  "project_specific_data_plan": "Consented Bangladesh amateur cricket drills, owner-produced demo videos"
+}

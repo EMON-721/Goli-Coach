@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.env
+.env.local
+*.sqlite*
+*.pyc
+__pycache__/
+.venv/
+private/
+public/models/*.task
+*.tsbuildinfo
+.pytest_cache/

@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {normalizeDigits,angle,summarize,validateClip,sourceList,drills,glossary,type Point} from '../lib/domain';
+for(const [input,out] of [['০','0'],['১২৩','123'],['১০.৫','10.5'],['১৫ sec','15 sec'],['English','English'],['১০-৩০','10-30'],['৯৮৭৬৫৪৩২১০','9876543210'],['',''],['৫ মিনিট','5 মিনিট'],['২০২৬','2026']])test(`Bangla normalization: ${input}`,()=>assert.equal(normalizeDigits(input),out));
+test('Right angle',()=>assert.equal(angle({x:0,y:1},{x:0,y:0},{x:1,y:0}),90));
+test('Straight angle',()=>assert.equal(angle({x:-1,y:0},{x:0,y:0},{x:1,y:0}),180));
+test('Coincident points abstain',()=>assert.equal(angle({x:0,y:0},{x:0,y:0},{x:1,y:0}),null));
+test('Empty frames do not create metrics',()=>assert.deepEqual(summarize([]),{valid_frames:0,total_frames:0,coverage:0,left_knee:null,right_knee:null,stance_ratio:null}));
+test('No detected body abstains',()=>assert.equal(summarize([{time:0,landmarks:[]}]).left_knee,null));
+test('Low visibility abstains',()=>assert.equal(summarize([{time:0,landmarks:Array.from({length:33},()=>({x:.5,y:.5,visibility:.1}))}]).valid_frames,0));
+test('Partial landmark arrays abstain',()=>assert.equal(summarize([{time:0,landmarks:Array.from({length:32},()=>({x:.5,y:.5,visibility:1}))}]).valid_frames,0));
+for(const [mime,bytes,sec,error] of [['video/mp4',1000,10,null],['video/webm',1000,30,null],['video/quicktime',1000,15,null],['image/jpeg',1000,15,'type'],['video/mp4',51*1024*1024,15,'size'],['video/mp4',1000,9,'duration'],['video/mp4',1000,31,'duration'],['video/mp4',1000,NaN,'duration'],['video/mp4',1000,Infinity,'duration'],['video/mp4',1000,-1,'duration']] as const)test(`Clip validator ${mime} ${bytes} ${sec}`,()=>assert.equal(validateClip(mime,bytes,sec),error));
+test('Curated glossary has 18 unique terms',()=>assert.equal(new Set(glossary.map(x=>x[0])).size,18));
+test('Six bilingual original drills',()=>assert.equal(drills.filter(d=>d.steps.length===3&&d.enSteps.length===3&&d.en&&d.name).length,6));
+test('Sources reference HTTPS, never imported',()=>assert.ok(sourceList.every(s=>s.url.startsWith('https://')&&s.state!=='imported')));
+test('Aspect ratio correction preserves image-plane angle',()=>{const p:Point[]=Array.from({length:33},()=>({x:.5,y:.5,visibility:1}));p[23]={x:0,y:0,visibility:1};p[25]={x:0,y:.5,visibility:1};p[27]={x:.25,y:.5,visibility:1};assert.equal(summarize([{time:0,aspect:2,landmarks:p}]).left_knee,90);});
+test('Zero shoulder span does not divide by zero',()=>{const p=Array.from({length:33},()=>({x:.5,y:.5,visibility:1}));assert.equal(summarize([{time:0,landmarks:p}]).stance_ratio,null);});

@@ -1,0 +1,4 @@
+import {drills as baseDrills} from './domain';
+export type FAQ={question_bn:string;question_en:string;answer_bn:string;answer_en:string};
+export type Content={brand:string;hero_bn:string;hero_en:string;about_bn:string;about_en:string;cta_bn:string;cta_en:string;privacy_bn?:string;privacy_en?:string;terms_bn?:string;terms_en?:string;mission_bn?:string;mission_en?:string;team_bn?:string;team_en?:string;faq?:FAQ[];drills?:typeof baseDrills;navigation?:{id:string;bn:string;en:string}[]};
+export const defaults:Content={brand:'GoliCoach',hero_bn:'প্রতিটি অনুশীলনে,\nএকটু এগিয়ে যান।',hero_en:'Small steps.\nA better game.',about_bn:'বাংলাদেশের মাঠে, গলিতে কিংবা নিজের উঠানে—নিজের ক্রিকেট অনুশীলন আরও মনোযোগ দিয়ে দেখার একটি সহজ সঙ্গী।',about_en:'A thoughtful practice companion for cricket in the streets, grounds and backyards of Bangladesh.',cta_bn:'অনুশীলন শুরু করুন',cta_en:'Start your practice'};
