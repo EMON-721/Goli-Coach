@@ -55,3 +55,11 @@ See [the current checkpoint](docs/CONTINUATION_2026-10-29.md) for completed chan
 
 ## 30 October continuation
 Email verification and password recovery (SMTP configuration required), single-use hashed tokens, secure backup/restore and expired-auth cleanup are implemented. See [operations guide](docs/OPERATIONS.md) and [current checkpoint](docs/CONTINUATION_2026-10-30.md). No real email was sent and no cloud service was provisioned. GitHub write access is still blocked by the integration (403).
+
+<!-- DEPLOYMENT LINKS: maintained for GitHub repository navigation -->
+## Website & repository links
+
+- **Source repository:** https://github.com/EMON-721/Goli-Coach
+- **Website:** No independently confirmed public deployment URL available. A link will be added only after its address is established.
+
+<!-- END DEPLOYMENT LINKS -->
