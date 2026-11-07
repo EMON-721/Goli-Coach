@@ -18,7 +18,7 @@ Leave NEXT_PUBLIC_API_BASE empty. Do not put SMTP passwords or database credenti
 
 The deployed frontend supports browser video analysis, local session history, journal, drills, comparisons, reports and pose replay export. Its health check will detect the absence of the account backend and display device mode.
 
-The existing server/app.py is a persistent Python/FastAPI application with SQLite and optional CPU MediaPipe. Netlify Functions support JavaScript/TypeScript and Go; this Python server is not deployed by netlify.toml. Online accounts, CMS, sharing and SMTP therefore still require the separate Python host, or a separately implemented Netlify-native backend with a managed database. No such migration is claimed by this configuration.
+The existing server/app.py is a persistent Python/FastAPI application with SQLite locally or TLS PostgreSQL online, plus optional CPU MediaPipe. Netlify Functions support JavaScript/TypeScript and Go; this Python server is not deployed by netlify.toml. Online accounts, CMS, sharing and SMTP therefore still require the separate Python host, or a separately implemented Netlify-native backend with a managed database. No such migration is claimed by this configuration.
 
 ## Connecting the existing backend later
 

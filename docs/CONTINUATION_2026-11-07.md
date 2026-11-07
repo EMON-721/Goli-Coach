@@ -15,3 +15,7 @@ Verification: 57 Python API/recovery/maintenance/evaluation/sharing tests and 32
 ## Netlify integration continuation
 
 Removed the requested sidebar encouragement card; the journal remains accessible as a simple sidebar-bottom link. Added an optional production-only API proxy built from BACKEND_ORIGIN, exact configured APP_ORIGIN validation on the Python server, and SERVER_VIDEO_ENABLED=0 support to keep inference in the browser behind Netlify. Deploy previews never receive the production API proxy. Hosting accounts and SMTP credentials remain unconnected; these changes do not constitute live activation.
+
+## Free-tier backend continuation
+
+The owner requires no card and no paid resources. The default Render Blueprint now uses Free compute without a disk, requires external PostgreSQL and uses Resend HTTPS email instead of blocked SMTP ports. Added PostgreSQL schema/driver support, a guard against ephemeral hosted SQLite, HTTP email transport and tests. Neon connection was confirmed by the client. Actual project provisioning and live email delivery must be verified separately; credentials are never placed in the repository.

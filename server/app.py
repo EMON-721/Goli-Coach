@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from server import auth_recovery
-from server import sharing, readiness
+from server import sharing, readiness, storage
 DB=Path(os.environ.get('DATABASE_PATH',str(ROOT/'private/golicoach.sqlite')))
 DB.parent.mkdir(parents=True,exist_ok=True)
 app=FastAPI(title='Goli-Coach',version='0.2.0')
@@ -23,11 +23,9 @@ model_state={'status':'not_loaded','model_id':'mediapipe-pose-landmarker-lite','
 
 def now():return datetime.now(timezone.utc).isoformat()
 def db():
- c=sqlite3.connect(DB);c.row_factory=sqlite3.Row;c.execute('PRAGMA foreign_keys=ON');return c
+ return storage.connect(DB)
 def migrate():
- with db() as c:
-  c.executescript((ROOT/'server/schema.sql').read_text())
-  if 'verified' not in {r[1] for r in c.execute('PRAGMA table_info(users)')}:c.execute('ALTER TABLE users ADD COLUMN verified INTEGER NOT NULL DEFAULT 0')
+ storage.migrate(ROOT,db)
 migrate()
 def audit(actor,action,target=''):
  with db() as c:c.execute('INSERT INTO audit(actor,action,target,created_at) VALUES(?,?,?,?)',(actor,action,target,now()))
@@ -85,7 +83,7 @@ class Credentials(BaseModel):
  password:str=Field(min_length=12,max_length=200)
  name:str=Field(default='Player',min_length=1,max_length=60)
 @app.get('/api/health')
-def api_health():return {'service':'golicoach','status':'ready','account_storage':'sqlite','version':'0.2.0','server_video_available':os.environ.get('SERVER_VIDEO_ENABLED','1')!='0'}
+def api_health():return {'service':'golicoach','status':'ready','account_storage':'postgres' if os.environ.get('DATABASE_URL') else 'sqlite','version':'0.2.0','server_video_available':os.environ.get('SERVER_VIDEO_ENABLED','1')!='0'}
 @app.get('/api/admin/readiness')
 def deployment_readiness(request:Request):
  role(request,{'superadmin'})

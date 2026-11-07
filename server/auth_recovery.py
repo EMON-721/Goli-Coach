@@ -1,5 +1,5 @@
 """Single-use email verification/password recovery. No tokens in API responses or logs."""
-import hashlib,logging,os,re,secrets,smtplib,ssl,time
+import hashlib,json,logging,os,re,secrets,smtplib,ssl,time,urllib.request
 from email.message import EmailMessage
 from urllib.parse import urlsplit
 from fastapi import BackgroundTasks,HTTPException
@@ -11,15 +11,26 @@ def email_valid(value):return bool(re.fullmatch(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-
 def configuration():
  origin=os.environ.get('APP_ORIGIN','').rstrip('/');parsed=urlsplit(origin)
  if parsed.scheme!='https' or not parsed.netloc or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password:raise ValueError('APP_ORIGIN must be a bare HTTPS origin')
- if not os.environ.get('SMTP_HOST') or not email_valid(os.environ.get('SMTP_FROM','')):raise ValueError('SMTP_HOST and valid SMTP_FROM required')
- if os.environ.get('SMTP_SECURITY','starttls') not in ['starttls','ssl']:raise ValueError('TLS SMTP required')
+ mode=os.environ.get('MAIL_TRANSPORT','smtp')
+ if mode=='resend':
+  if not os.environ.get('RESEND_API_KEY') or not email_valid(os.environ.get('MAIL_FROM','')):raise ValueError('Email API key and verified sender required')
+ elif mode=='smtp':
+  if not os.environ.get('SMTP_HOST') or not email_valid(os.environ.get('SMTP_FROM','')):raise ValueError('SMTP_HOST and valid SMTP_FROM required')
+  if os.environ.get('SMTP_SECURITY','starttls') not in ['starttls','ssl']:raise ValueError('TLS SMTP required')
+ else:raise ValueError('Unsupported mail transport')
  return origin
 
 def deliver(recipient,purpose,token):
  try:
-  origin=configuration();message=EmailMessage();message['From']=os.environ['SMTP_FROM'];message['To']=recipient
+  origin=configuration();message=EmailMessage();message['From']=os.environ.get('MAIL_FROM','') if os.environ.get('MAIL_TRANSPORT')=='resend' else os.environ['SMTP_FROM'];message['To']=recipient
   message['Subject']='Goli-Coach: '+('verify your email' if purpose=='verify' else 'reset your password')
   message.set_content(f'You requested an account action at Goli-Coach.\n\n{origin}/#{purpose}={token}\n\nThis single-use link expires in 30 minutes. If you did not request it, ignore this message.\n')
+  if os.environ.get('MAIL_TRANSPORT')=='resend':
+   body=json.dumps({'from':message['From'],'to':[recipient],'subject':message['Subject'],'text':message.get_content()}).encode()
+   request=urllib.request.Request('https://api.resend.com/emails',data=body,headers={'Authorization':'Bearer '+os.environ['RESEND_API_KEY'],'Content-Type':'application/json'},method='POST')
+   with urllib.request.urlopen(request,timeout=15) as response:
+    if response.status not in (200,201,202):raise ValueError('Email API rejected message')
+   return
   context=ssl.create_default_context();mode=os.environ.get('SMTP_SECURITY','starttls');port=int(os.environ.get('SMTP_PORT','465' if mode=='ssl' else '587'))
   transport=smtplib.SMTP_SSL if mode=='ssl' else smtplib.SMTP
   with transport(os.environ['SMTP_HOST'],port,timeout=15,**({'context':context} if mode=='ssl' else {})) as smtp:

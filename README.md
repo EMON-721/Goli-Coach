@@ -22,7 +22,7 @@ Original videos stay on the device during browser analysis. Server analysis requ
 
 ## Architecture
 
-The interface uses Next.js, React and TypeScript. Browser inference uses MediaPipe Tasks Vision. The optional FastAPI server provides cookie-based accounts and owned reports backed by SQLite. A Docker Compose configuration runs the web export and API on a single HTTPS origin through Caddy.
+The interface uses Next.js, React and TypeScript. Browser inference uses MediaPipe Tasks Vision. The optional FastAPI server provides cookie-based accounts and owned reports backed by local SQLite or hosted PostgreSQL. A Docker Compose configuration runs the web export and API on a single HTTPS origin through Caddy.
 
 ## Documentation
 

@@ -1,23 +1,25 @@
-# Live backend and email activation
+# Free backend activation with Netlify frontend
 
-The owner selected Netlify for the frontend. Follow [Netlify deployment](NETLIFY.md) first. The Render link below remains an optional separate Python host, not the selected frontend deployment.
+[Deploy the prepared free backend](https://render.com/deploy?repo=https://github.com/emonhossain24/Goli-Coach).
 
-[Deploy the prepared repository to Render](https://render.com/deploy?repo=https://github.com/emonhossain24/Goli-Coach).
+The default render.yaml now uses Render Free with no paid disk. Do not enter payment details for the old paid Blueprint. Cancel it, refresh/recreate the Blueprint from the latest main branch and verify that the displayed plan is Free and no disk is listed. Provider anti-abuse verification may vary by account; stop if payment is still required.
 
-The prepared render.yaml creates a single Docker web service with a persistent 1 GB disk in Singapore. It uses a paid 1 CPU / 2 GB plan. Review the current price in the provider before approving creation. No paid resource has been created by this project update.
+## Accounts and persistence
 
-The complete web export and FastAPI API run on the same HTTPS origin. The current static review Site does not become an online-account server merely because this file exists. Use the resulting Render origin for the complete app, or connect a custom domain there.
+Create a dedicated Neon Free project for Goli-Coach. Copy its TLS PostgreSQL connection string directly into the Render DATABASE_URL secret; never into GitHub or chat. REQUIRE_REMOTE_DATABASE=1 prevents the hosted app from silently saving accounts to temporary SQLite. The application creates its tables on startup. Existing local SQLite data is not automatically transferred; export and plan any real-data migration separately.
 
-During creation, supply APP_ORIGIN (the bare HTTPS app origin), SMTP_HOST, SMTP_FROM, SMTP_USER and SMTP_PASSWORD. Set SMTP_PORT and SMTP_SECURITY to match the provider; STARTTLS on 587 is the default, or SSL on 465. Store these in the hosting dashboard as secrets, never in GitHub or a chat message. For the selected Netlify frontend, APP_ORIGIN must be the exact production Netlify URL. Set BACKEND_ORIGIN in Netlify to the resulting Python-host origin and redeploy the frontend; the backend is not the public email-link origin. Set SERVER_VIDEO_ENABLED=0 for this proxy deployment. Verified sender/domain setup is managed by your SMTP provider.
+Set APP_ORIGIN on Render to the exact production Netlify origin, such as https://golicoach.netlify.app. Set BACKEND_ORIGIN on Netlify to the resulting Render HTTPS origin and redeploy Netlify. Leave NEXT_PUBLIC_API_BASE blank. Production API requests are proxied; previews remain in device mode. SERVER_VIDEO_ENABLED=0 keeps pose inference in the browser and avoids long synchronous video requests through the proxy.
 
-The container remains non-root. Check that /data is writable by UID 10001 when the host attaches its disk; do not switch the app to root to hide a permission problem. Keep a single instance and worker with SQLite.
+## Email
 
-## Verification on the host
+Render Free blocks outbound SMTP ports 25/465/587. The free Blueprint instead selects MAIL_TRANSPORT=resend, using HTTPS on port 443. Create a Resend Free account and store RESEND_API_KEY and MAIL_FROM as Render secrets. The sender must be allowed/verified by Resend. Its testing sender is restricted to the account owner's address; sending to other users requires the provider's verified-domain setup. A Netlify subdomain alone does not establish ownership of a separate email-sending domain.
 
-1. Run `python -m server.readiness`; all checks must pass.
-2. Run `python -m server.check_smtp`; it tests TLS and authentication and sends no mail.
-3. Register an owner-controlled test account through the deployed app and confirm actual delivery, the correct link origin, single-use verification and sign-in. Send only to the test account you control.
-4. Save a report and journal entry, restart the service, then verify they remain available after signing in. A deployment health response alone does not prove persistence or email delivery.
-5. Set up and rehearse the documented backup/restore procedure before real private data is stored.
+No live email is sent by these configuration steps. Registration and password recovery send account-action emails only when the configured user requests them. Validate an owner-controlled account first, including delivery and token redemption, then verify report persistence after a service restart.
 
-Render/Railway account access and SMTP configuration are not connected in the current assistant session. Live deployment and delivery cannot be marked complete until these steps run on an authorised host.
+## Free-tier limits
+
+Render Free sleeps after 15 idle minutes, can cold-start slowly and is usage-limited. Its filesystem is disposable; the remote database stores user data. No paid instance, disk or expiring Render Free database is declared. Neon and Resend free allowances have their own limits. Free hosting is a hobby/testing setup, not an uptime guarantee.
+
+Use PostgreSQL backups/export procedures from the database provider. The existing server.maintenance SQLite backup command is for local SQLite runs and must not be used as a Neon backup.
+
+References: https://render.com/docs/free ; https://neon.com/pricing ; https://resend.com/pricing ; https://resend.com/docs/api-reference/emails/send-email
