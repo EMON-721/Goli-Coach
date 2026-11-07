@@ -1,10 +1,5 @@
 # GoliCoach AI
 
-## Administration and content management
-
-The optional authenticated Python server supports role-checked editing of bilingual content, drills, model settings and source reviews, as well as feedback, member controls and audit history. These functions require the server: the standalone browser app does not include the full management backend. See [Admin Guide](docs/ADMIN_GUIDE_BN.md).
-
-
 A Bangla-first cricket practice companion. This is implemented source, with a static browser app and an optional private Python server. It is a working baseline, **not a completed V5 production release**.
 
 ## Built
@@ -12,7 +7,7 @@ A Bangla-first cricket practice companion. This is implemented source, with a st
 - Batting/bowling clip flow, consent, segment selection, slow playback, privacy-blurred preview, MediaPipe pose adapter and landmark overlay.
 - Image-plane knee angles (aspect-ratio corrected), low-visibility abstention, own-session comparison, manual-review fallback.
 - Device-local or signed-in report and journal save/delete, explicit device-to-account copying, JSON and printable PDF reports, six original drills and 18-term glossary.
-- Optional authenticated FastAPI endpoint that actually loaded and ran the model. SQLite ownership checks, cookie auth, structured bilingual CMS for page copy/navigation/FAQ/drills, selected-revision publishing/restoration, model control, source-rights review, user roles/blocking, feedback workflow and audit.
+- Optional authenticated FastAPI endpoint that actually loaded and ran the model. SQLite ownership checks, cookie auth, session-level reports and bilingual drill content.
 
 ## Run browser app
 
@@ -32,7 +27,7 @@ npm run build
 REQUIRE_EMAIL_VERIFICATION=0 SECURE_COOKIES=0 .venv/bin/python server/app.py
 ```
 
-Open http://127.0.0.1:8000. Register an account. To bootstrap an administrator from the local console: `.venv/bin/python server/bootstrap_admin.py`. No shared passwords or credentials are included.
+Open http://127.0.0.1:8000 to use the local server.
 
 ## Check
 
@@ -48,7 +43,7 @@ The model smoke harness takes a locally supplied fixture: `.venv/bin/python scri
 
 ## Honest availability
 
-The hosted static version uses device-local storage and browser inference; accounts, server inference and admin require the separately run Python server. Cloud provisioning is deferred by the owner. The CMS and signed-in journal were expanded on 29 October; 32 Node and 40 Python checks pass. Desktop layout was inspected, but browser interactions/mobile/admin QA are not marked passed. No Bangladesh training observations were imported. IsolationForest remains untrained; real cricket evaluation needs consented annotated data. See docs/CONTINUATION_2026-10-29.md and docs/APP_ARCHITECTURE.md for exact remaining work.
+The hosted static version uses device-local storage and browser inference; accounts and server inference require the separately run Python server. Cloud provisioning is deferred by the owner. The CMS and signed-in journal were expanded on 29 October; 32 Node and 40 Python checks pass. Desktop layout was inspected, but browser interactions and mobile QA are not marked passed. No Bangladesh training observations were imported. IsolationForest remains untrained; real cricket evaluation needs consented annotated data. See docs/CONTINUATION_2026-10-29.md and docs/APP_ARCHITECTURE.md for exact remaining work.
 
 GitHub target: https://github.com/emonhossain24/Goli-Coach. Generated model/WASM files, secrets, deployment identity and private data are excluded from this repository.
 
