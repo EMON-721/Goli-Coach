@@ -33,4 +33,6 @@ The interface uses Next.js, React and TypeScript. Browser inference uses MediaPi
 - [Netlify setup](docs/NETLIFY.md)
 - [Operations](docs/OPERATIONS.md)
 
+**Website:** [GoliCoach on Netlify](https://golicoach.netlify.app/)
+
 [Source repository](https://github.com/emonhossain24/Goli-Coach)
