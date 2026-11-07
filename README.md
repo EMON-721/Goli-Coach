@@ -1,5 +1,10 @@
 # GoliCoach AI
 
+## Administration and content management
+
+The optional authenticated Python server supports role-checked editing of bilingual content, drills, model settings and source reviews, as well as feedback, member controls and audit history. These functions require the server: the standalone browser app does not include the full management backend. See [Admin Guide](docs/ADMIN_GUIDE_BN.md).
+
+
 A Bangla-first cricket practice companion. This is implemented source, with a static browser app and an optional private Python server. It is a working baseline, **not a completed V5 production release**.
 
 ## Built
@@ -45,7 +50,7 @@ The model smoke harness takes a locally supplied fixture: `.venv/bin/python scri
 
 The hosted static version uses device-local storage and browser inference; accounts, server inference and admin require the separately run Python server. Cloud provisioning is deferred by the owner. The CMS and signed-in journal were expanded on 29 October; 32 Node and 40 Python checks pass. Desktop layout was inspected, but browser interactions/mobile/admin QA are not marked passed. No Bangladesh training observations were imported. IsolationForest remains untrained; real cricket evaluation needs consented annotated data. See docs/CONTINUATION_2026-10-29.md and docs/APP_ARCHITECTURE.md for exact remaining work.
 
-GitHub target: https://github.com/EMON-721/Goli-Coach. Generated model/WASM files, secrets, deployment identity and private data are excluded from this repository.
+GitHub target: https://github.com/emonhossain24/Goli-Coach. Generated model/WASM files, secrets, deployment identity and private data are excluded from this repository.
 
 Documentation: docs/USER_GUIDE_BN.md, docs/ADMIN_GUIDE_BN.md, docs/MODEL_CARD.md, docs/DATASET_REGISTER.md, docs/DEPLOYMENT.md, docs/APP_ARCHITECTURE.md.
 
@@ -56,10 +61,7 @@ See [the current checkpoint](docs/CONTINUATION_2026-10-29.md) for completed chan
 ## 30 October continuation
 Email verification and password recovery (SMTP configuration required), single-use hashed tokens, secure backup/restore and expired-auth cleanup are implemented. See [operations guide](docs/OPERATIONS.md) and [current checkpoint](docs/CONTINUATION_2026-10-30.md). No real email was sent and no cloud service was provisioned. GitHub write access is still blocked by the integration (403).
 
-<!-- DEPLOYMENT LINKS: maintained for GitHub repository navigation -->
 ## Website & repository links
 
-- **Source repository:** https://github.com/EMON-721/Goli-Coach
-- **Website:** No independently confirmed public deployment URL available. A link will be added only after its address is established.
+- **Source repository:** https://github.com/emonhossain24/Goli-Coach
 
-<!-- END DEPLOYMENT LINKS -->
