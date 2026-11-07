@@ -47,7 +47,7 @@ The hosted static version uses device-local storage and browser inference; accou
 
 GitHub target: https://github.com/emonhossain24/Goli-Coach. Generated model/WASM files, secrets, deployment identity and private data are excluded from this repository.
 
-Documentation: docs/USER_GUIDE_BN.md, docs/ADMIN_GUIDE_BN.md, docs/MODEL_CARD.md, docs/DATASET_REGISTER.md, docs/DEPLOYMENT.md, docs/APP_ARCHITECTURE.md.
+Documentation: docs/USER_GUIDE_BN.md, docs/MODEL_CARD.md, docs/DATASET_REGISTER.md, docs/DEPLOYMENT.md, docs/APP_ARCHITECTURE.md.
 
 ## Continuation — 29 October 2026
 
