@@ -1,5 +1,7 @@
 # Deploy and run
 
+For the prepared hosted-server activation path, see [Live backend setup](LIVE_BACKEND_SETUP.md).
+
 ## Static site / Vercel
 
 `npm ci`
