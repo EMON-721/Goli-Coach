@@ -1,5 +1,7 @@
 # Deploy and run
 
+Selected frontend host: **Netlify**. See [Netlify setup](NETLIFY.md). The Docker/Render options below are optional backend-host configurations, not a Netlify account backend.
+
 For the prepared hosted-server activation path, see [Live backend setup](LIVE_BACKEND_SETUP.md).
 
 ## Static site / Vercel

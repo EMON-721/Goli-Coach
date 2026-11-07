@@ -1,5 +1,7 @@
 # Live backend and email activation
 
+The owner selected Netlify for the frontend. Follow [Netlify deployment](NETLIFY.md) first. The Render link below remains an optional separate Python host, not the selected frontend deployment.
+
 [Deploy the prepared repository to Render](https://render.com/deploy?repo=https://github.com/emonhossain24/Goli-Coach).
 
 The prepared render.yaml creates a single Docker web service with a persistent 1 GB disk in Singapore. It uses a paid 1 CPU / 2 GB plan. Review the current price in the provider before approving creation. No paid resource has been created by this project update.
