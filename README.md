@@ -1,62 +1,35 @@
-# GoliCoach AI
+# Goli-Coach
 
-A Bangla-first cricket practice companion. This is implemented source, with a static browser app and an optional private Python server. It is a working baseline, **not a completed V5 production release**.
+Goli-Coach is a Bangla-first cricket practice companion for reviewing batting and bowling movements, keeping training notes and building a regular practice habit.
 
-## Built
-- Responsive Bangla/English workspace, original cricket-green visual identity and code-drawn pose illustration.
-- Batting/bowling clip flow, consent, segment selection, slow playback, privacy-blurred preview, MediaPipe pose adapter and landmark overlay.
-- Image-plane knee angles (aspect-ratio corrected), low-visibility abstention, own-session comparison, manual-review fallback.
-- Device-local or signed-in report and journal save/delete, explicit device-to-account copying, JSON and printable PDF reports, six original drills and 18-term glossary.
-- Optional authenticated FastAPI endpoint that actually loaded and ran the model. SQLite ownership checks, cookie auth, session-level reports and bilingual drill content.
+## Features
 
-## Run browser app
+- Bangla and English interface with a responsive cricket workspace.
+- Local video upload or camera recording, 10–30 second clip selection, slow replay and pose overlays.
+- Browser-based MediaPipe pose analysis, approximate knee angles, visibility checks and manual observations.
+- Saved sessions, favourites, personal comparisons and a practice journal.
+- Device-local storage and optional signed-in report synchronisation, with explicit copying of device records.
+- JSON reports, printable PDFs and pose-only WebM replay exports.
+- Expiring report-summary links with optional notes and owner-controlled revocation.
+- Email accounts, email verification and password recovery.
+- Six bilingual practice drills, an 18-term glossary and camera setup guidance.
 
-```sh
-npm ci
-node scripts/prepare-assets.mjs
-python scripts/download_model.py
-npm run dev
-```
+## How it works
 
-## Run complete local server
+Choose a clip, confirm permission and select the part to review. The browser loads the pose model from the same origin and measures visible body landmarks. Results describe approximate image-plane movement; cricket skill scores require a separately validated model. You can add your observations, compare your own sessions and choose a drill for your next practice.
 
-```sh
-python -m venv .venv
-.venv/bin/pip install -r server/requirements.lock
-npm run build
-REQUIRE_EMAIL_VERIFICATION=0 SECURE_COOKIES=0 .venv/bin/python server/app.py
-```
+Original videos stay on the device during browser analysis. Server analysis requires separate consent. Report links contain a selected summary, and pose-video exports contain a drawn skeleton with no original footage or audio.
 
-Open http://127.0.0.1:8000 to use the local server.
+## Architecture
 
-## Check
+The interface uses Next.js, React and TypeScript. Browser inference uses MediaPipe Tasks Vision. The optional FastAPI server provides cookie-based accounts and owned reports backed by SQLite. A Docker Compose configuration runs the web export and API on a single HTTPS origin through Caddy.
 
-```sh
-npm run lint
-npm run typecheck
-npm test
-.venv/bin/python -m pytest tests/test_api.py tests/model_inference_test.py tests/test_bangladesh_evaluation.py tests/test_auth_recovery.py tests/test_maintenance.py -q
-npm run build
-```
+## Documentation
 
-The model smoke harness takes a locally supplied fixture: `.venv/bin/python scripts/evaluate_model.py /path/to/pose.jpg`. It constructs two technical videos, calls the real authenticated endpoint, and compares nonempty versus empty pose output. See docs/MODEL_SMOKE_RESULTS.json for actual measurements. This is not a Bangladesh cricket benchmark.
+- [User guide](docs/USER_GUIDE_BN.md)
+- [Model and measurement details](docs/MODEL_CARD.md)
+- [Data sources](docs/DATASET_REGISTER.md)
+- [Deployment](docs/DEPLOYMENT.md)
+- [Operations](docs/OPERATIONS.md)
 
-## Honest availability
-
-The hosted static version uses device-local storage and browser inference; accounts and server inference require the separately run Python server. Cloud provisioning is deferred by the owner. The CMS and signed-in journal were expanded on 29 October; 32 Node and 40 Python checks pass. Desktop layout was inspected, but browser interactions and mobile QA are not marked passed. No Bangladesh training observations were imported. IsolationForest remains untrained; real cricket evaluation needs consented annotated data. See docs/CONTINUATION_2026-10-29.md and docs/APP_ARCHITECTURE.md for exact remaining work.
-
-GitHub target: https://github.com/emonhossain24/Goli-Coach. Generated model/WASM files, secrets, deployment identity and private data are excluded from this repository.
-
-Documentation: docs/USER_GUIDE_BN.md, docs/MODEL_CARD.md, docs/DATASET_REGISTER.md, docs/DEPLOYMENT.md, docs/APP_ARCHITECTURE.md.
-
-## Continuation — 29 October 2026
-
-See [the current checkpoint](docs/CONTINUATION_2026-10-29.md) for completed changes and the exact remaining deployment/data work. Cloud provisioning is deferred at the owner’s request. Source is maintained in EMON-721/Goli-Coach.
-
-## 30 October continuation
-Email verification and password recovery (SMTP configuration required), single-use hashed tokens, secure backup/restore and expired-auth cleanup are implemented. See [operations guide](docs/OPERATIONS.md) and [current checkpoint](docs/CONTINUATION_2026-10-30.md). No real email was sent and no cloud service was provisioned. GitHub write access is still blocked by the integration (403).
-
-## Website & repository links
-
-- **Source repository:** https://github.com/emonhossain24/Goli-Coach
-
+[Source repository](https://github.com/emonhossain24/Goli-Coach)

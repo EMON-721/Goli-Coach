@@ -18,8 +18,8 @@ def configuration():
 def deliver(recipient,purpose,token):
  try:
   origin=configuration();message=EmailMessage();message['From']=os.environ['SMTP_FROM'];message['To']=recipient
-  message['Subject']='GoliCoach: '+('verify your email' if purpose=='verify' else 'reset your password')
-  message.set_content(f'You requested an account action at GoliCoach.\n\n{origin}/#{purpose}={token}\n\nThis single-use link expires in 30 minutes. If you did not request it, ignore this message.\n')
+  message['Subject']='Goli-Coach: '+('verify your email' if purpose=='verify' else 'reset your password')
+  message.set_content(f'You requested an account action at Goli-Coach.\n\n{origin}/#{purpose}={token}\n\nThis single-use link expires in 30 minutes. If you did not request it, ignore this message.\n')
   context=ssl.create_default_context();mode=os.environ.get('SMTP_SECURITY','starttls');port=int(os.environ.get('SMTP_PORT','465' if mode=='ssl' else '587'))
   transport=smtplib.SMTP_SSL if mode=='ssl' else smtplib.SMTP
   with transport(os.environ['SMTP_HOST'],port,timeout=15,**({'context':context} if mode=='ssl' else {})) as smtp:

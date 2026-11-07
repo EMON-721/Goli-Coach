@@ -1,0 +1,12 @@
+.git
+.openai
+.env*
+node_modules
+.next
+out
+.venv
+private
+*.sqlite*
+**/__pycache__
+.pytest_cache
+*.zip

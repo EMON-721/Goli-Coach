@@ -16,3 +16,6 @@ CREATE INDEX IF NOT EXISTS journal_owner ON journal(owner_id,date);
 
 CREATE TABLE IF NOT EXISTS action_tokens(token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,purpose TEXT NOT NULL,expires REAL NOT NULL,created REAL NOT NULL);
 CREATE INDEX IF NOT EXISTS action_tokens_owner ON action_tokens(user_id,purpose);
+
+CREATE TABLE IF NOT EXISTS report_shares(id TEXT PRIMARY KEY,token_hash TEXT UNIQUE NOT NULL,owner_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,record_id TEXT NOT NULL REFERENCES records(id) ON DELETE CASCADE,expires REAL NOT NULL,payload TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS report_shares_owner ON report_shares(owner_id,record_id);

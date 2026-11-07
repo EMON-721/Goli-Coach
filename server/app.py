@@ -1,4 +1,4 @@
-"""GoliCoach local/private server. Serves the Next static export and isolated APIs."""
+"""Goli-Coach local/private server. Serves the Next static export and isolated APIs."""
 import sys, os, json, sqlite3, secrets, hashlib, hmac, time, uuid, tempfile, threading
 from pathlib import Path
 from datetime import datetime, timezone
@@ -11,9 +11,10 @@ from pydantic import BaseModel, Field
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from server import auth_recovery
+from server import sharing, readiness
 DB=Path(os.environ.get('DATABASE_PATH',str(ROOT/'private/golicoach.sqlite')))
 DB.parent.mkdir(parents=True,exist_ok=True)
-app=FastAPI(title='GoliCoach AI',version='0.1.0')
+app=FastAPI(title='Goli-Coach',version='0.2.0')
 rate=defaultdict(deque)
 lock=threading.Lock()
 model_lock=threading.Lock()
@@ -76,7 +77,12 @@ class Credentials(BaseModel):
  password:str=Field(min_length=12,max_length=200)
  name:str=Field(default='Player',min_length=1,max_length=60)
 @app.get('/api/health')
-def api_health():return {'service':'golicoach','status':'ready','account_storage':'sqlite','version':'0.1.0'}
+def api_health():return {'service':'golicoach','status':'ready','account_storage':'sqlite','version':'0.2.0'}
+@app.get('/api/admin/readiness')
+def deployment_readiness(request:Request):
+ role(request,{'superadmin'})
+ checks=readiness.checks(ROOT,db)
+ return {'ready':all(checks.values()),'checks':checks,'email_delivery_tested':False}
 @app.post('/api/auth/register')
 def register(v:Credentials,response:Response,tasks:BackgroundTasks):
  email=v.email.strip().lower()
@@ -360,7 +366,8 @@ def get_job(id:str,request:Request):
  if not r:reject(404,'Job not found')
  return dict(r)
 auth_recovery.install(app,db,hash_password,audit)
+sharing.install(app,db,identity,own_record,audit)
 if (ROOT/'out').exists():app.mount('/',StaticFiles(directory=ROOT/'out',html=True),name='site')
 if __name__=='__main__':
  import uvicorn
- uvicorn.run(app,host='127.0.0.1',port=int(os.environ.get('PORT','8000')))
+ uvicorn.run(app,host=os.environ.get('HOST','127.0.0.1'),port=int(os.environ.get('PORT','8000')))

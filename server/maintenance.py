@@ -11,7 +11,7 @@ def inspect(path):
  with connection(path.resolve()) as db:
   if db.execute('PRAGMA integrity_check').fetchone()[0]!='ok':raise ValueError('SQLite integrity check failed')
   if db.execute('PRAGMA foreign_key_check').fetchall():raise ValueError('Foreign key check failed')
-  if not REQUIRED<={r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}:raise ValueError('Not a GoliCoach database')
+  if not REQUIRED<={r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}:raise ValueError('Not a Goli-Coach database')
   return {table:db.execute('SELECT count(*) FROM '+table).fetchone()[0] for table in sorted(REQUIRED)}
 def backup(source,destination):
  source=source.resolve();destination=destination.resolve()
@@ -42,6 +42,7 @@ def restore(source,destination):
    # Restoring a backup must never resurrect revoked authentication tokens.
    dst.execute('DELETE FROM sessions')
    if dst.execute("SELECT 1 FROM sqlite_master WHERE name='action_tokens'").fetchone():dst.execute('DELETE FROM action_tokens')
+   if dst.execute("SELECT 1 FROM sqlite_master WHERE name='report_shares'").fetchone():dst.execute('DELETE FROM report_shares')
    dst.commit()
   counts=inspect(tmp);os.link(tmp,destination);os.chmod(destination,0o600);return counts
  finally:tmp.unlink(missing_ok=True)
@@ -49,6 +50,7 @@ def cleanup(path,apply=False):
  with sqlite3.connect(path.resolve().as_uri()+'?mode=rw',uri=True) as db:
   db.execute('BEGIN IMMEDIATE')
   queries={'sessions':('expires<?',time.time()),'action_tokens':('expires<?',time.time())}
+  if db.execute("SELECT 1 FROM sqlite_master WHERE name='report_shares'").fetchone():queries['report_shares']=('expires<?',time.time())
   counts={table:db.execute('SELECT count(*) FROM '+table+' WHERE '+where,(cutoff,)).fetchone()[0] for table,(where,cutoff) in queries.items()}
   if apply:
    for table,(where,cutoff) in queries.items():db.execute('DELETE FROM '+table+' WHERE '+where,(cutoff,))
