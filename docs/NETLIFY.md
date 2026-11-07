@@ -5,7 +5,7 @@ Netlify is the selected frontend host. Import `emonhossain24/Goli-Coach` from Gi
 | Setting | Value |
 |---|---|
 | Base directory | Repository root (leave empty) |
-| Build command | `python3 scripts/download_model.py && npm run build` |
+| Build command | `node scripts/netlify-build.mjs` |
 | Publish directory | `out` |
 | Node | 24 |
 | Next runtime plugin | Skipped for this static export |
@@ -22,9 +22,9 @@ The existing server/app.py is a persistent Python/FastAPI application with SQLit
 
 ## Connecting the existing backend later
 
-Keep frontend requests on the Netlify origin by adding a narrowly scoped `/api/*` proxy to the actual authorised HTTPS backend after it is deployed. Configure the backend's allowed public origin, email link origin and host-only cookies for the Netlify URL; verify login and CSRF handling end to end before enabling accounts. The existing API's origin boundary currently compares the request Origin with the backend Host, so a proxy rule alone is not sufficient. Do not solve this by disabling origin protection or exposing a database in the browser.
+Set BACKEND_ORIGIN in the Netlify build environment to the actual authorised bare HTTPS backend origin. The build helper emits a narrowly scoped `/api/*` proxy while preserving the API prefix. Leave NEXT_PUBLIC_API_BASE empty. Deploy previews and branch builds never get the production API proxy. Set APP_ORIGIN on the Python host to the exact production Netlify origin, which also sets the email-link origin. The API accepts that configured Origin and rejects others; browser authentication stays on the frontend origin. Keep host-only Secure/HttpOnly cookies and verify the proxy forwards them before admitting real accounts. Do not disable origin protection or expose a database in the browser.
 
-Netlify's external proxy timeout is 26 seconds. Keep pose inference in the browser; the current synchronous Python video endpoint can run longer and must not be assumed to work through this proxy. Large private clip processing needs an asynchronous worker/upload design before being offered on the split deployment.
+Netlify's external proxy timeout is 26 seconds. Set SERVER_VIDEO_ENABLED=0 on the backend for the Netlify split deployment. Its health response then hides the server-upload option in the UI and its API rejects server inference requests. Keep pose inference in the browser; the current synchronous Python video endpoint can run longer and must not be assumed to work through this proxy. Large private clip processing needs an asynchronous worker/upload design before being offered on the split deployment.
 
 After deployment, check the homepage, BN/EN switch, demo, drill dialog, camera permission flow and a real local clip. Verify the .task and .wasm assets load. Browser MediaRecorder support varies; test the pose replay download on the target browser.
 

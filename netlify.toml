@@ -1,5 +1,5 @@
 [build]
-  command = "python3 scripts/download_model.py && npm run build"
+  command = "node scripts/netlify-build.mjs"
   publish = "out"
 
 [build.environment]

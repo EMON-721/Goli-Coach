@@ -11,3 +11,7 @@ Added Dockerfile, Compose, HTTPS proxy and a deployment readiness command plus s
 No consented, annotated Bangladesh cricket dataset has been obtained; actual Bangladesh cricket evaluation remains NOT EVALUATED. Existing evaluation tooling is retained.
 
 Verification: 57 Python API/recovery/maintenance/evaluation/sharing tests and 32 Node tests passed; typecheck and production build passed. Browser preview rendered the new brand, but the demo click did not change state in the preview. Production browser interaction checks follow publication. Docker runtime, real SMTP and end-to-end pose-video download are not verified by these checks.
+
+## Netlify integration continuation
+
+Removed the requested sidebar encouragement card; the journal remains accessible as a simple sidebar-bottom link. Added an optional production-only API proxy built from BACKEND_ORIGIN, exact configured APP_ORIGIN validation on the Python server, and SERVER_VIDEO_ENABLED=0 support to keep inference in the browser behind Netlify. Deploy previews never receive the production API proxy. Hosting accounts and SMTP credentials remain unconnected; these changes do not constitute live activation.

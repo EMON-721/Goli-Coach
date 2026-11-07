@@ -53,12 +53,20 @@ def session(response,u):
  with db() as c:c.execute('INSERT INTO sessions VALUES(?,?,?)',(hashlib.sha256(token.encode()).hexdigest(),u['id'],time.time()+86400))
  response.set_cookie('gc_session',token,httponly=True,samesite='strict',secure=os.environ.get('SECURE_COOKIES','1')=='1',max_age=86400)
  return public_user(u)
+def origin_allowed(origin,host):
+ parsed=urlsplit(origin)
+ if parsed.scheme not in ('https','http') or not parsed.netloc or parsed.path or parsed.query or parsed.fragment or parsed.username or parsed.password:return False
+ configured=os.environ.get('APP_ORIGIN','').rstrip('/')
+ if configured:
+  # A split frontend/API deployment has one explicitly trusted public origin.
+  return origin==configured
+ return parsed.netloc==host
 @app.middleware('http')
 async def boundary(request,call_next):
  if request.url.path.startswith('/api/'):
   if request.method not in ('GET','HEAD','OPTIONS'):
    origin=request.headers.get('origin')
-   if origin and urlsplit(origin).netloc!=request.headers.get('host'):return Response('Origin denied',status_code=403)
+   if origin and not origin_allowed(origin,request.headers.get('host')):return Response('Origin denied',status_code=403)
    if int(request.headers.get('content-length','0'))>52*1024*1024:return Response('Upload too large',status_code=413)
   key=(request.client.host if request.client else 'unknown',request.url.path)
   limit=10 if '/auth/' in request.url.path else 120
@@ -77,7 +85,7 @@ class Credentials(BaseModel):
  password:str=Field(min_length=12,max_length=200)
  name:str=Field(default='Player',min_length=1,max_length=60)
 @app.get('/api/health')
-def api_health():return {'service':'golicoach','status':'ready','account_storage':'sqlite','version':'0.2.0'}
+def api_health():return {'service':'golicoach','status':'ready','account_storage':'sqlite','version':'0.2.0','server_video_available':os.environ.get('SERVER_VIDEO_ENABLED','1')!='0'}
 @app.get('/api/admin/readiness')
 def deployment_readiness(request:Request):
  role(request,{'superadmin'})
@@ -332,6 +340,7 @@ def inference(path,start,end):
 @app.post('/api/ai/analyze')
 def analyze(request:Request,file:UploadFile=File(...),consent:str=Form(...),start:float=Form(0),end:float=Form(10)):
  u=identity(request)
+ if os.environ.get('SERVER_VIDEO_ENABLED','1')=='0':reject(503,'Server video analysis is disabled; use browser analysis')
  if consent!='true':reject(422,'Explicit video-processing consent required')
  if not model_enabled():reject(503,'Model disabled')
  if file.content_type not in ['video/mp4','video/webm','video/quicktime']:reject(415,'Unsupported video type')

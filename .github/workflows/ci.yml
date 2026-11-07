@@ -22,4 +22,4 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install -r server/requirements.lock
       - run: python scripts/download_model.py
-      - run: python -m pytest tests/test_api.py tests/model_inference_test.py tests/test_bangladesh_evaluation.py tests/test_auth_recovery.py tests/test_maintenance.py tests/test_sharing.py tests/test_smtp_check.py -q
+      - run: python -m pytest tests/test_api.py tests/model_inference_test.py tests/test_bangladesh_evaluation.py tests/test_auth_recovery.py tests/test_maintenance.py tests/test_sharing.py tests/test_smtp_check.py tests/test_split_origin.py -q

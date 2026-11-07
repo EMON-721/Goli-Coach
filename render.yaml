@@ -16,6 +16,8 @@ services:
     envVars:
       - key: DATABASE_PATH
         value: /data/golicoach.sqlite
+      - key: SERVER_VIDEO_ENABLED
+        value: '0'
       - key: SECURE_COOKIES
         value: '1'
       - key: REQUIRE_EMAIL_VERIFICATION

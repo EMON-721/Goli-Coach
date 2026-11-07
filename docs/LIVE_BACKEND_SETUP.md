@@ -8,7 +8,7 @@ The prepared render.yaml creates a single Docker web service with a persistent 1
 
 The complete web export and FastAPI API run on the same HTTPS origin. The current static review Site does not become an online-account server merely because this file exists. Use the resulting Render origin for the complete app, or connect a custom domain there.
 
-During creation, supply APP_ORIGIN (the bare HTTPS app origin), SMTP_HOST, SMTP_FROM, SMTP_USER and SMTP_PASSWORD. Set SMTP_PORT and SMTP_SECURITY to match the provider; STARTTLS on 587 is the default, or SSL on 465. Store these in the hosting dashboard as secrets, never in GitHub or a chat message. Update APP_ORIGIN after the hostname is assigned, then redeploy. Verified sender/domain setup is managed by your SMTP provider.
+During creation, supply APP_ORIGIN (the bare HTTPS app origin), SMTP_HOST, SMTP_FROM, SMTP_USER and SMTP_PASSWORD. Set SMTP_PORT and SMTP_SECURITY to match the provider; STARTTLS on 587 is the default, or SSL on 465. Store these in the hosting dashboard as secrets, never in GitHub or a chat message. For the selected Netlify frontend, APP_ORIGIN must be the exact production Netlify URL. Set BACKEND_ORIGIN in Netlify to the resulting Python-host origin and redeploy the frontend; the backend is not the public email-link origin. Set SERVER_VIDEO_ENABLED=0 for this proxy deployment. Verified sender/domain setup is managed by your SMTP provider.
 
 The container remains non-root. Check that /data is writable by UID 10001 when the host attaches its disk; do not switch the app to root to hide a permission problem. Keep a single instance and worker with SQLite.
 
